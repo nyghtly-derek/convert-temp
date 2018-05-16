@@ -5,13 +5,32 @@ fn main() {
 
     let temp_type = get_temp_type();
     let temp = get_temp();
+    let mut temp_convert: f32 = 0.0;
+    let mut temp_convert_type = "";
 
-    println!("Your temperature is {}{}", temp, temp_type);
+    if temp_type == "f" || temp_type == "F" {
+        temp_convert = far_to_celsius(temp);
+        temp_convert_type = "C";
+    }
+    else if temp_type == "c" || temp_type == "C" {
+        temp_convert = cel_to_fahren(temp);
+        temp_convert_type = "F";
+    }
+
+    println!("{}°{} = {}°{}", temp, temp_type, temp_convert, temp_convert_type);
+}
+
+fn far_to_celsius(temp: f32) -> f32 {
+    return (temp - 32.0) / 1.8
+}
+
+fn cel_to_fahren(temp: f32) -> f32 {
+    return temp * 1.8 + 32.0
 }
 
 fn get_temp_type() -> String {
     loop {
-        println!("What is your temperature type? (f/c)");
+        println!("What is your temperature type? (F/C)");
         
         let temp_type = get_line();
         let temp_type: String = temp_type.trim().to_string();
@@ -26,13 +45,13 @@ fn get_temp_type() -> String {
     }
 }
 
-fn get_temp() -> u32 {
+fn get_temp() -> f32 {
      loop {
         println!("What is your temperature?");
 
         let temp = get_line();
 
-        let temp: u32 = match temp.trim().parse() {
+        let temp: f32 = match temp.trim().parse() {
             Ok(num) => num,
             Err(_) => continue,
         };
